@@ -1,29 +1,34 @@
-#include <Time.h>
+#include <TimeLib.h>
 #include <TimeAlarms.h>
 
 int motorPin = 3;
 int ledPin = 12;
 int potPin = 5;
 
-void setup() 
+void setup()
 {
-  setTime(0,0,1, 1, 1, 00);
+  Serial.begin(9600);
+  setTime(0,0,1, 1, 1, 01);
   pinMode(motorPin, OUTPUT);
   pinMode(ledPin, OUTPUT);
-  
+
   Alarm.alarmRepeat(0,0,0, feedAlarm);
   Alarm.alarmRepeat(12,0,0, feedAlarm);
-  
+
   feed(getFeedDuration());
-} 
- 
- 
-void loop() 
+}
+
+
+void loop()
 {
+  Alarm.delay(1000);
+  Serial.println(second());
 }
 
 void feed(int time)
 {
+  Serial.print("Feeding: ");
+  Serial.println(time);
   digitalWrite(ledPin, HIGH);
   analogWrite(motorPin, 255);
   delay(time);
@@ -38,5 +43,5 @@ int getFeedDuration()
 }
 
 void feedAlarm() {
-  feed(getFeedDuration()); 
+  feed(getFeedDuration());
 }
